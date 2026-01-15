@@ -1,0 +1,71 @@
+{
+  "name": "@oro.ad/nuxt-claude-devtools-bc",
+  "version": "1.0.0",
+  "description": "Nuxt module for automatic Vite dev server configuration with tunnels (Cloudflare, ngrok, etc.) and DevTools integration",
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.mts",
+      "import": "./dist/module.mjs"
+    }
+  },
+  "main": "./dist/module.mjs",
+  "author": "Simon Bystrov <jobsbystr@gmail.com> (https://sbystr.com/)",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/types.d.mts"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build && npm run client:build",
+    "client:build": "nuxi generate client",
+    "client:dev": "nuxi dev client --port 3300",
+    "dev": "npm run play:dev",
+    "dev:prepare": "nuxt-module-build --stub && nuxi prepare client",
+    "prepare": "nuxi prepare client",
+    "play:dev": "nuxi dev playground",
+    "play:prod": "npm run prepack && nuxi dev playground",
+    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@nuxt/devtools-kit": "^3.1.1",
+    "@nuxt/kit": "^4.2.2",
+    "defu": "^6.1.4",
+    "sirv": "^3.0.2"
+  },
+  "devDependencies": {
+    "@iconify-json/carbon": "^1.2.16",
+    "@nuxt/devtools": "^3.1.1",
+    "@nuxt/devtools-ui-kit": "^3.1.1",
+    "@nuxt/eslint-config": "^1.12.1",
+    "@nuxt/module-builder": "^1.0.2",
+    "@nuxt/schema": "^4.2.2",
+    "changelogen": "^0.6.2",
+    "eslint": "^9.39.2",
+    "nuxt": "^4.2.2",
+    "vitest": "^4.0.17"
+  },
+  "peerDependencies": {
+    "nuxt": "^3.0.0 || ^4.0.0"
+  },
+  "keywords": [
+    "nuxt",
+    "nuxt-module",
+    "nuxt-claude-business-console",
+    "vite",
+    "hmr",
+    "dev-server",
+    "devtools",
+    "business-console"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
