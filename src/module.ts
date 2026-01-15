@@ -1,46 +1,25 @@
 import { defineNuxtModule, addPlugin, createResolver, useLogger, addImports, addServerHandler } from '@nuxt/kit'
 import { defu } from 'defu'
 import { setupDevToolsUI } from './devtools'
+import { getTunnelConfig, type TunnelConfig, type TunnelOptions } from './tunnel'
+
+// Re-export tunnel utilities for external use
+export { getTunnelConfig, isTunnelActive, getTunnelOrigin } from './tunnel'
+export type { TunnelConfig, TunnelOptions } from './tunnel'
 
 const logger = useLogger('@oro.ad/nuxt-claude-devtools-bc')
-
-export interface TunnelConfig {
-  /**
-   * Tunnel host (without protocol)
-   * @default process.env.DEV_TUNNEL_HOST
-   */
-  host?: string
-
-  /**
-   * Protocol for tunnel connection
-   * @default 'https'
-   */
-  protocol?: 'http' | 'https'
-
-  /**
-   * Port for HMR WebSocket
-   * @default 443 for https, 80 for http
-   */
-  port?: number
-
-  /**
-   * Additional allowed hosts for Vite server
-   * @default []
-   */
-  additionalHosts?: string[]
-
-  /**
-   * Enable/disable tunnel configuration
-   * @default true (but only applies config if host is set)
-   */
-  enabled?: boolean
-}
 
 export interface ModuleOptions {
   /**
    * Tunnel configuration for dev server
    */
-  tunnel?: TunnelConfig
+  tunnel?: TunnelOptions & {
+    /**
+     * Enable/disable tunnel configuration
+     * @default true (but only applies config if host is set)
+     */
+    enabled?: boolean
+  }
 
   /**
    * Enable Nuxt Devtools integration
@@ -54,52 +33,6 @@ export interface ModuleOptions {
    * @default true (auto-disables auth when tunnel is configured)
    */
   disableDevtoolsAuth?: boolean
-}
-
-export interface ResolvedTunnelConfig {
-  host: string
-  protocol: 'http' | 'https'
-  port: number
-  wsProtocol: 'ws' | 'wss'
-  origin: string
-  allowedHosts: string[]
-}
-
-/**
- * Resolve tunnel configuration from options and environment variables
- */
-function resolveTunnelConfig(options: TunnelConfig = {}): ResolvedTunnelConfig | null {
-  // Get host from options or environment
-  const host = options.host || process.env.DEV_TUNNEL_HOST
-
-  if (!host) {
-    return null
-  }
-
-  const protocol = options.protocol
-    || (process.env.DEV_TUNNEL_PROTOCOL as 'http' | 'https')
-    || 'https'
-
-  const port = options.port
-    || Number(process.env.DEV_TUNNEL_PORT)
-    || (protocol === 'https' ? 443 : 80)
-
-  const wsProtocol = protocol === 'https' ? 'wss' : 'ws'
-
-  const allowedHosts = [
-    host,
-    'localhost',
-    ...(options.additionalHosts || []),
-  ]
-
-  return {
-    host,
-    protocol,
-    port,
-    wsProtocol,
-    origin: `${protocol}://${host}`,
-    allowedHosts,
-  }
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -125,13 +58,13 @@ export default defineNuxtModule<ModuleOptions>({
     const resolver = createResolver(import.meta.url)
 
     // Store resolved config for runtime access
-    let resolvedTunnel: ResolvedTunnelConfig | null = null
+    let resolvedTunnel: TunnelConfig | null = null
 
     // Configure tunnel only in development mode
     if (nuxt.options.dev) {
       // Check if tunnel is enabled
       if (options.tunnel?.enabled !== false) {
-        resolvedTunnel = resolveTunnelConfig(options.tunnel)
+        resolvedTunnel = getTunnelConfig(options.tunnel)
 
         if (resolvedTunnel) {
           logger.info(`Configuring for tunnel: ${resolvedTunnel.origin}`)
