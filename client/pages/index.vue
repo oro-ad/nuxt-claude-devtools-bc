@@ -58,7 +58,10 @@ onMounted(() => {
 <template>
   <div class="relative p-6 n-bg-base flex flex-col h-screen">
     <div class="flex items-center gap-3 mb-4">
-      <div class="i-carbon-connection-signal text-2xl" :class="config?.tunnel ? 'text-green' : 'text-gray'" />
+      <div
+        class="i-carbon-connection-signal text-2xl"
+        :class="config?.tunnel ? 'text-green' : 'text-gray'"
+      />
       <h1 class="text-2xl font-bold">
         Claude DevTools BC
       </h1>
@@ -69,21 +72,33 @@ onMounted(() => {
     </div>
 
     <!-- Loading state -->
-    <div v-if="loading" class="flex items-center gap-2 text-gray">
+    <div
+      v-if="loading"
+      class="flex items-center gap-2 text-gray"
+    >
       <div class="i-carbon-circle-dash animate-spin" />
       Loading configuration...
     </div>
 
     <!-- Error state -->
     <div v-else-if="error">
-      <NTip n="red" icon="carbon-warning">
+      <NTip
+        n="red"
+        icon="carbon-warning"
+      >
         Failed to load configuration: {{ error }}
       </NTip>
     </div>
 
     <!-- Tunnel Active -->
-    <div v-else-if="config?.tunnel" class="flex flex-col gap-4">
-      <NTip n="green" icon="carbon-checkmark">
+    <div
+      v-else-if="config?.tunnel"
+      class="flex flex-col gap-4"
+    >
+      <NTip
+        n="green"
+        icon="carbon-checkmark"
+      >
         Tunnel is active and configured
       </NTip>
 
@@ -161,8 +176,14 @@ onMounted(() => {
     </div>
 
     <!-- No Tunnel Configured -->
-    <div v-else class="flex flex-col gap-4">
-      <NTip n="yellow" icon="carbon-information">
+    <div
+      v-else
+      class="flex flex-col gap-4"
+    >
+      <NTip
+        n="yellow"
+        icon="carbon-information"
+      >
         No tunnel configured
       </NTip>
 
@@ -175,10 +196,18 @@ onMounted(() => {
         </p>
 
         <div class="bg-gray/10 p-3 rounded font-mono text-sm">
-          <div class="opacity-50"># Option 1: Inline</div>
-          <div class="text-green">DEV_TUNNEL_HOST=my-app.trycloudflare.com npm run dev</div>
-          <div class="mt-2 opacity-50"># Option 2: .env.local</div>
-          <div class="text-green">echo "DEV_TUNNEL_HOST=my-app.trycloudflare.com" > .env.local</div>
+          <div class="opacity-50">
+            # Option 1: Inline
+          </div>
+          <div class="text-green">
+            DEV_TUNNEL_HOST=my-app.trycloudflare.com npm run dev
+          </div>
+          <div class="mt-2 opacity-50">
+            # Option 2: .env.local
+          </div>
+          <div class="text-green">
+            echo "DEV_TUNNEL_HOST=my-app.trycloudflare.com" > .env.local
+          </div>
         </div>
       </NCard>
 
@@ -203,7 +232,10 @@ onMounted(() => {
     <div class="flex-auto" />
 
     <!-- DevTools Client Info -->
-    <div v-if="client" class="mt-4 pt-4 border-t border-gray/20">
+    <div
+      v-if="client"
+      class="mt-4 pt-4 border-t border-gray/20"
+    >
       <div class="flex items-center gap-2 text-sm opacity-50">
         <div class="i-carbon-checkmark text-green" />
         DevTools connected

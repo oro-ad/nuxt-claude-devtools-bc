@@ -3,9 +3,6 @@ import { defineNuxtModule } from '@nuxt/kit'
 import { startSubprocess } from '@nuxt/devtools-kit'
 
 export default defineNuxtConfig({
-  devtools: {
-    enabled: true,
-  },
 
   modules: [
     /**
@@ -37,6 +34,11 @@ export default defineNuxtConfig({
       },
     }),
   ],
+  devtools: {
+    enabled: true,
+  },
+
+  compatibilityDate: '2024-08-21',
 
   // Configure the module (you can also use DEV_TUNNEL_HOST env variable)
   claudeDevtoolsBc: {
@@ -48,6 +50,4 @@ export default defineNuxtConfig({
     },
     devtools: true,
   },
-
-  compatibilityDate: '2024-08-21',
 })

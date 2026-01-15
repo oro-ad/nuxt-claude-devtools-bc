@@ -76,13 +76,13 @@ function resolveTunnelConfig(options: TunnelConfig = {}): ResolvedTunnelConfig |
     return null
   }
 
-  const protocol = options.protocol ||
-    (process.env.DEV_TUNNEL_PROTOCOL as 'http' | 'https') ||
-    'https'
+  const protocol = options.protocol
+    || (process.env.DEV_TUNNEL_PROTOCOL as 'http' | 'https')
+    || 'https'
 
-  const port = options.port ||
-    Number(process.env.DEV_TUNNEL_PORT) ||
-    (protocol === 'https' ? 443 : 80)
+  const port = options.port
+    || Number(process.env.DEV_TUNNEL_PORT)
+    || (protocol === 'https' ? 443 : 80)
 
   const wsProtocol = protocol === 'https' ? 'wss' : 'ws'
 

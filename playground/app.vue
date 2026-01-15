@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useTunnel} from "#imports";
+import { useTunnel } from '#imports'
 
 const tunnel = useTunnel()
 </script>
@@ -15,7 +15,10 @@ const tunnel = useTunnel()
         Tunnel Status
       </h2>
 
-      <div v-if="tunnel.isActive" class="text-green-600">
+      <div
+        v-if="tunnel.isActive"
+        class="text-green-600"
+      >
         <p>Tunnel is active</p>
         <p class="font-mono text-sm mt-2">
           Origin: {{ tunnel.origin }}
@@ -25,7 +28,10 @@ const tunnel = useTunnel()
         </p>
       </div>
 
-      <div v-else class="text-yellow-600">
+      <div
+        v-else
+        class="text-yellow-600"
+      >
         <p>No tunnel configured</p>
         <p class="text-sm mt-2 opacity-70">
           Set DEV_TUNNEL_HOST env variable to enable tunnel
